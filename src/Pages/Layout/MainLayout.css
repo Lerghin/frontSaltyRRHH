@@ -1,0 +1,23 @@
+.logo{
+    width: 6rem;
+   height: 6rem;
+   border-radius: 11rem;
+ padding-bottom: 1rem;
+ padding-top: 1rem;
+ margin-left: 1rem;
+}
+
+.logo-h1{
+    margin-left: -1.5rem;
+}
+.nav-log{
+    margin-left: 25rem;
+}
+.nav-init{
+   margin-top: 7rem;
+
+}
+
+.log-right{
+    margin-top: 10rem;
+}

@@ -1,0 +1,36 @@
+.home{
+    display: flex;
+    justify-content:flex-start;
+
+
+}
+.noHay{
+    
+    margin-left: 1rem;
+}
+
+.cardHome{
+display: flex;
+ justify-content: center;
+ margin-top: 2rem;
+ margin-left: 2rem;
+ max-height: 25rem;
+ flex-wrap: wrap;
+ gap:4rem;
+ text-align: center;
+
+}
+.cardIn{
+    border: 0.3rem solid black;
+    border-radius: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    background-color:#d9e2e2;
+}
+.img-card{
+    height: 20vh;
+  
+    border-bottom: 0.3rem solid black;
+   
+}
+

@@ -11,7 +11,7 @@ import { styled } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { API } from '../Utils/axios';
-import { toast } from 'react-toastify';
+
 
 import { LS } from './../Utils/LS.js';
 import { login } from '../Store/Actions/authActions.js';
@@ -85,7 +85,7 @@ const Signin = () => {
       dispatch(login(res.data));
       if (res.status === 200) {
        
-        toast.success('You are logged in successfully');
+       
         const { token, role } = res.data;
         LS.set('token', token);
         LS.set('role', role);
@@ -94,7 +94,7 @@ const Signin = () => {
        
       }
     } catch (error) {
-      toast.error(error.message);
+      alert("usuario o contraseña invalida");
       console.error(error);
     }
   };
@@ -135,7 +135,7 @@ const Signin = () => {
                   Iniciar Sesión
                 </StyledButton>
               </form>
-              <Link href="/signup">
+              <Link href="/">
                 ¿No tienes una cuenta? Regístrate
               </Link>
             </StyledPaper>

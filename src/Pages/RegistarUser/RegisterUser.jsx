@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   TextField,
   Button,
@@ -15,17 +15,19 @@ import { IoAddCircleSharp } from "react-icons/io5";
 import { CiCircleRemove } from "react-icons/ci";
 
 import "react-toastify/dist/ReactToastify.css";
+import { nationalities } from "../../Utils/nationalities";
 
 const RegisterUser = () => {
   const params = useParams();
   const userId = `${params.id}`;
+  const navigate = useNavigate();
   //const [error, setError] = useState(null);
   //const [loading, setLoading] = useState(true);
   const [applicant, setApplicant] = useState({
     user: {
-        id: userId,
-        role: "USER"
-      },
+      id: userId,
+      role: "USER",
+    },
     firstName: "",
     secondName: "",
     lastName: "",
@@ -44,10 +46,10 @@ const RegisterUser = () => {
     parish: "",
     municipality: "",
     position: {
-        positionApp: "",
-        salary: "",
-        disponibility: "",
-      },
+      positionApp: "",
+      salary: "",
+      disponibility: "",
+    },
     studiesList: [
       {
         institutionName: "",
@@ -63,12 +65,12 @@ const RegisterUser = () => {
         address: "",
         phone: "",
         position: "",
-        peopleSubordinated:"",
-        positionBoss:"",
+        peopleSubordinated: "",
+        positionBoss: "",
         description: "",
-        startDate:"",
-        endDate:"",
-        reason:"",
+        startDate: "",
+        endDate: "",
+        reason: "",
       },
     ],
     coursesList: [
@@ -76,7 +78,6 @@ const RegisterUser = () => {
         nameCourse: "",
         nameInstitution: "",
         date: "",
-    
       },
     ],
   });
@@ -155,7 +156,7 @@ const RegisterUser = () => {
       });
     }
   };
-  
+
   const handleAddItem = (listName) => {
     if (listName === "position") {
       // No agregamos un nuevo objeto `position`, ya que solo debería haber uno
@@ -178,7 +179,6 @@ const RegisterUser = () => {
       }));
     }
   };
-  
 
   const handleRemoveItem = (listName, index) => {
     setApplicant((prevApplicant) => {
@@ -194,22 +194,22 @@ const RegisterUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    const isConfirmed = confirm("Confirma que todos sus datos son correctos y que pueden ser verificables?");
+
+    const isConfirmed = confirm(
+      "Confirma que todos sus datos son correctos y que pueden ser verificables?"
+    );
 
     if (!isConfirmed) {
-        return;
+      return;
     }
     try {
-     
       await API.post("/app/create", applicant);
-      alert( "Usuario registrado con éxito")
+      alert("Usuario registrado con éxito");
       toast.success("Usuario registrado con éxito");
+      navigate("/home");
     } catch (error) {
-        alert(error.response.data);
-     
+      alert(error.response.data);
     }
-
   };
 
   /* if (loading) {
@@ -268,7 +268,26 @@ const RegisterUser = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
+              select
               label="Nacionalidad"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              name="dniType"
+              value={applicant.dniType}
+              onChange={handleChange}
+              required
+            >
+              {nationalities.map((nationality) => (
+                <MenuItem key={nationality.code} value={nationality.code}>
+                  {nationality.name}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Tipo de Documento"
               variant="outlined"
               fullWidth
               margin="normal"
@@ -282,22 +301,7 @@ const RegisterUser = () => {
               <MenuItem value="EXTRANJERO">EXTRANJERO</MenuItem>
             </TextField>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Tipo de Documento"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              select
-              name="dniType"
-              value={applicant.dniType}
-              onChange={handleChange}
-              required
-            >
-              <MenuItem value="VENEZOLANO">V</MenuItem>
-              <MenuItem value="EXTRANJERO">E</MenuItem>
-            </TextField>
-          </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               label="Cédula"
@@ -434,7 +438,6 @@ const RegisterUser = () => {
                         handleChangeList("studiesList", index, e)
                       }
                       fullWidth
-                    
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -446,7 +449,6 @@ const RegisterUser = () => {
                         handleChangeList("studiesList", index, e)
                       }
                       fullWidth
-                  
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -460,7 +462,6 @@ const RegisterUser = () => {
                       }
                       fullWidth
                       InputLabelProps={{ shrink: true }}
-                     
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -474,7 +475,6 @@ const RegisterUser = () => {
                       }
                       fullWidth
                       InputLabelProps={{ shrink: true }}
-                      
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -521,7 +521,6 @@ const RegisterUser = () => {
                       value={job.jobName || ""}
                       onChange={(e) => handleChangeList("jobsList", index, e)}
                       fullWidth
-                    
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -531,7 +530,6 @@ const RegisterUser = () => {
                       value={job.address || ""}
                       onChange={(e) => handleChangeList("jobsList", index, e)}
                       fullWidth
-                     
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -541,7 +539,6 @@ const RegisterUser = () => {
                       value={job.phone || ""}
                       onChange={(e) => handleChangeList("jobsList", index, e)}
                       fullWidth
-                    
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -551,7 +548,6 @@ const RegisterUser = () => {
                       value={job.position || ""}
                       onChange={(e) => handleChangeList("jobsList", index, e)}
                       fullWidth
-                  
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -561,7 +557,6 @@ const RegisterUser = () => {
                       value={job.peopleSubordinated || ""}
                       onChange={(e) => handleChangeList("jobsList", index, e)}
                       fullWidth
-                   
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -571,7 +566,6 @@ const RegisterUser = () => {
                       value={job.positionBoss || ""}
                       onChange={(e) => handleChangeList("jobsList", index, e)}
                       fullWidth
-                 
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -581,7 +575,6 @@ const RegisterUser = () => {
                       value={job.description || ""}
                       onChange={(e) => handleChangeList("jobsList", index, e)}
                       fullWidth
-                 
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -593,7 +586,6 @@ const RegisterUser = () => {
                       onChange={(e) => handleChangeList("jobsList", index, e)}
                       fullWidth
                       InputLabelProps={{ shrink: true }}
-                      
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -605,7 +597,6 @@ const RegisterUser = () => {
                       onChange={(e) => handleChangeList("jobsList", index, e)}
                       fullWidth
                       InputLabelProps={{ shrink: true }}
-                 
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -652,7 +643,6 @@ const RegisterUser = () => {
                         handleChangeList("coursesList", index, e)
                       }
                       fullWidth
-                   
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -664,7 +654,6 @@ const RegisterUser = () => {
                         handleChangeList("coursesList", index, e)
                       }
                       fullWidth
-                     
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -678,7 +667,6 @@ const RegisterUser = () => {
                       }
                       fullWidth
                       InputLabelProps={{ shrink: true }}
-                     
                     />
                   </Grid>
 
@@ -691,7 +679,7 @@ const RegisterUser = () => {
                   </Grid>
                 </Grid>
               ))}
-               <Button
+            <Button
               variant="outlined"
               onClick={() => handleAddItem("coursesList")}
               startIcon={<IoAddCircleSharp />}
@@ -700,39 +688,37 @@ const RegisterUser = () => {
             </Button>
           </Grid>
 
-            <Grid item xs={12}>
-              <TextField
-                label="Cargo al que Postula"
-                name="positionApp"
-                value={applicant.position.positionApp}
-                onChange={(e) => handleChangeList("position", 0, e)} // Usamos handleChangeList porque `position` es un objeto y no un array
-                fullWidth
-                required
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Sueldo al que aspira"
-                name="salary"
-                type="number"
-                value={applicant.position.salary}
-                onChange={(e) => handleChangeList("position", 0, e)} // Usamos handleChangeList porque `position` es un objeto y no un array
-                fullWidth
-                required
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Disponibilidad"
-                name="disponibility"
-                value={applicant.position.disponibility}
-                onChange={(e) => handleChangeList("position", 0, e)} // Usamos handleChangeList porque `position` es un objeto y no un array
-                fullWidth
-                required
-              />
-            </Grid>
-
-           
+          <Grid item xs={12}>
+            <TextField
+              label="Cargo al que Postula"
+              name="positionApp"
+              value={applicant.position.positionApp}
+              onChange={(e) => handleChangeList("position", 0, e)} // Usamos handleChangeList porque `position` es un objeto y no un array
+              fullWidth
+              required
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label="Sueldo al que aspira"
+              name="salary"
+              type="number"
+              value={applicant.position.salary}
+              onChange={(e) => handleChangeList("position", 0, e)} // Usamos handleChangeList porque `position` es un objeto y no un array
+              fullWidth
+              required
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label="Disponibilidad"
+              name="disponibility"
+              value={applicant.position.disponibility}
+              onChange={(e) => handleChangeList("position", 0, e)} // Usamos handleChangeList porque `position` es un objeto y no un array
+              fullWidth
+              required
+            />
+          </Grid>
 
           {/* Botón de Enviar */}
           <Grid item xs={12}>

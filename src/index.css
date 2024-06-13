@@ -1,5 +1,10 @@
-/* src/index.css */
-
+@font-face {
+  font-family: bebas_new;
+  src: url("./../public/assets/Bebas-Regular.otf");
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;

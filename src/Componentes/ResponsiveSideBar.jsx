@@ -9,21 +9,21 @@ import {
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { LS } from "../Utils/LS";
-import './ResponsiveSideBar.css'; // Asegúrate de importar los estilos
+import './ResponsiveSideBar.css'; // Import styles
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../Store/Actions/authActions";
 
 const ResponsiveSideBar = () => {
   const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
-  const dispatch= useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const role = LS.getText("role");
     if (role) {
-      setUserRole(role.trim()); // Eliminar espacios extra si los hay
+      setUserRole(role.trim()); // Eliminate any extra spaces
     }
-    setLoading(false); // Marcar la carga como completada
+    setLoading(false); // Mark loading as completed
   }, []);
 
   const handleLogout = () => {
@@ -31,12 +31,12 @@ const ResponsiveSideBar = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>; // O un spinner de carga
+    return <div>Loading...</div>; // Or a loading spinner
   }
 
   return (
     <div className="sidebar-custom">
-      <CDBSidebar textColor="#fff" backgroundColor="#E91E63">
+      <CDBSidebar textColor="#fff" backgroundColor="#c51162">
         <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
           <a href="/homeUser" className="text-decoration-none" style={{ color: "inherit" }}>
             Menu
@@ -45,33 +45,20 @@ const ResponsiveSideBar = () => {
 
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu>
-            <NavLink exact to="/homeUser" activeClassName="activeClicked">
+            <NavLink to="/homeUser" className={({ isActive }) => (isActive ? "activeClicked" : "")}>
               <CDBSidebarMenuItem icon="home" className="menu-item">Inicio</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/citaDay" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="file-alt" className="menu-item">Citas del DíA</CDBSidebarMenuItem>
+          
+            <NavLink to="/createVacant" className={({ isActive }) => (isActive ? "activeClicked" : "")}>
+              <CDBSidebarMenuItem icon="sticky-note" className="menu-item">Crear Vacante</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/createCita" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="calendar" className="menu-item">Registrar Citas</CDBSidebarMenuItem>
-            </NavLink>
-            <NavLink exact to="/createHistory" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="file-alt" className="menu-item">Registrar Historia</CDBSidebarMenuItem>
-            </NavLink>
-            <NavLink exact to="/createPatients" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="file-alt" className="menu-item">Registrar Pacientes</CDBSidebarMenuItem>
-            </NavLink>
-            <NavLink exact to="/createHorario" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="file-alt" className="menu-item">Crear Horarios</CDBSidebarMenuItem>
-            </NavLink>
-            <NavLink exact to="/createPresu" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="file-alt" className="menu-item">Crear Presupuesto</CDBSidebarMenuItem>
-            </NavLink>
-            <NavLink exact to="/createUser" activeClassName="activeClicked">
+
+            <NavLink to="/createUser" className={({ isActive }) => (isActive ? "activeClicked" : "")}>
               {userRole === "USER" ? null : (
-                <CDBSidebarMenuItem icon="user" className="menu-item">Crear Acceso Doctor</CDBSidebarMenuItem>
+                <CDBSidebarMenuItem icon="user" className="menu-item">Crear Acceso Usuario</CDBSidebarMenuItem>
               )}
             </NavLink>
-            <NavLink exact to="/signup" activeClassName="activeClicked">
+            <NavLink to="/signup" className={({ isActive }) => (isActive ? "activeClicked" : "")}>
               {userRole === "USER" ? null : (
                 <CDBSidebarMenuItem icon="user" className="menu-item">Crear Acceso Administrador</CDBSidebarMenuItem>
               )}

@@ -12,6 +12,12 @@ import HomeUser from "./Pages/homeUser/HomeUser";
 import MainLayout from "./Pages/Layout/MainLayout";
 import store from "./Store/store";
 import Vacantes from "./Pages/Vacantes/Vacantes";
+import AplicantByVacacant from "./Pages/Vacantes/AplicantByVacacant";
+import UserDetails from "./Pages/RegistarUser/UserDetails";
+import CreateVacant from "./Pages/Vacantes/CreateVacant";
+import EditVacancy from "./Pages/Vacantes/EditVacancy";
+import CreateUser from "./Pages/RegistarUser/CreateUser";
+import Users from "./Pages/Users";
 
 
 const ProtectedRoute = () => {
@@ -34,6 +40,7 @@ const router = createBrowserRouter([
         path: '/signin',
         element:<Signin/>
       }
+
     ]
   },
   
@@ -58,6 +65,31 @@ const router = createBrowserRouter([
           {
             path: '/vacantes',
             element: <Vacantes/>
+          },
+          {
+            path: '/appVacants/:id',
+            element: <AplicantByVacacant/>
+          },
+          {
+            path: '/watchApp/:idApplicant',
+            element: <UserDetails/>
+          },
+          
+          {
+            path: '/createVacant',
+            element: <CreateVacant/>
+          },
+          {
+            path: '/editVacant/:id',
+            element: <EditVacancy/>
+          },
+          {
+            path: '/createUser',
+            element:<CreateUser/>
+          },
+          {
+            path: '/users',
+            element:<Users/>
           },
         ]
       }

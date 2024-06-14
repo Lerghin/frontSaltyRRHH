@@ -16,7 +16,8 @@ const TablaVacante = ({ data, onDelete }) => {
     fecha,
     cantidadCubierta,
    cantidadDisponible,
-   status
+   status,
+  
  
   } = data;
   
@@ -58,7 +59,8 @@ const TablaVacante = ({ data, onDelete }) => {
     
       <td>{  cantidadDisponible}</td>
       <td>{cantidadCubierta}</td>
-      <td>{   status}</td>
+      <td>{  status}</td>
+     
       <td className="applicant"> <MdPeople  onClick={() => navigate(`/appVacants/${id}`)}  /></td>
      {userRole==='USER'? null :(<td  >
       <FaUserEdit className="m-2 my-2 h-5" onClick={() => navigate(`/editVacant/${id}`)}  /> 

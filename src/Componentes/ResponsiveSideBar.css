@@ -11,7 +11,7 @@
   }
   
   .sidebar-custom .sidebar-content {
-    background-color: #c51162; /* Rojo */
+    background-color: #2584A7 ; /* Rojo */
     color: #fff; /* Blanco */
   }
   
@@ -26,7 +26,7 @@
   
   .sidebar-custom .menu-item:hover {
     background-color: #fff; /* Blanco */
-    color: #E91E63; /* Rojo */
+    color:#2584A7 ; 
   }
   
   .sidebar-custom .logout-button {

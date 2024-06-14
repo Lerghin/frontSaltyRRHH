@@ -9,6 +9,7 @@ import { LS } from "../Utils/LS.js";
 import TablaUsers from "../Componentes/TablaUsers.jsx";
 
 import ResponsiveSideBar from "../Componentes/SideBarVacantes.jsx";
+import SideBarUsers from "../Componentes/SideBarUsers.jsx";
 
 
 
@@ -24,10 +25,10 @@ const Users = () => {
 
   useEffect(() => {
     API
-      .get("/user/get")
+      .get("/users/traer")
       .then((response) => {
         const fetchUsers = response.data;
-        console.log(fetchUsers)
+        
         setUsers(fetchUsers); 
         setResults(fetchUsers); // Store original data in 'doctors'
         setSortedDoctors(fetchUsers.sort((a, b) => a.nombre.localeCompare(b.nombre))); 
@@ -57,7 +58,7 @@ const Users = () => {
   return (
     <div className="home">
       <div>
-        <ResponsiveSideBar />
+      <SideBarUsers className="home-sidebar" />
       </div>
 
       <div className="patientsTable">

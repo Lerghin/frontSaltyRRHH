@@ -21,9 +21,9 @@ const ResponsiveSideBar = () => {
   useEffect(() => {
     const role = LS.getText("role");
     if (role) {
-      setUserRole(role.trim()); // Eliminate any extra spaces
+      setUserRole(role.trim()); // Eliminar espacios extra si los hay
     }
-    setLoading(false); // Mark loading as completed
+    setLoading(false); // Marcar la carga como completada
   }, []);
 
   const handleLogout = () => {
@@ -36,7 +36,7 @@ const ResponsiveSideBar = () => {
 
   return (
     <div className="sidebar-custom">
-      <CDBSidebar textColor="#fff" backgroundColor="#c51162">
+      <CDBSidebar textColor="#fff" backgroundColor="#2584A7 ">
         <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
           <a href="/homeUser" className="text-decoration-none" style={{ color: "inherit" }}>
             Menu
@@ -58,7 +58,7 @@ const ResponsiveSideBar = () => {
                 <CDBSidebarMenuItem icon="user" className="menu-item">Crear Acceso Usuario</CDBSidebarMenuItem>
               )}
             </NavLink>
-            <NavLink to="/signup" className={({ isActive }) => (isActive ? "activeClicked" : "")}>
+            <NavLink to="/createAdmin" className={({ isActive }) => (isActive ? "activeClicked" : "")}>
               {userRole === "USER" ? null : (
                 <CDBSidebarMenuItem icon="user" className="menu-item">Crear Acceso Administrador</CDBSidebarMenuItem>
               )}

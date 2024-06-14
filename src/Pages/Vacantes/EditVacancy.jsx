@@ -17,6 +17,8 @@ const EditVacancy = () => {
     cantidadDisponible: 0,
     cantidadCubierta: 0,
     status: '',
+    requisitos: '',
+    descripcion:''
   });
 
   useEffect(() => {
@@ -80,6 +82,34 @@ const EditVacancy = () => {
               required
             />
           </Form.Group>
+          <Row className="mb-3">
+          <Form.Group as={Col} controlId="formDescripcion">
+            <Form.Label>Descripción del Cargo</Form.Label>
+            <Form.Control
+              type="text"
+              as="textarea"  // Indica que el control es un textarea
+              rows={3} 
+              name="descripcion"
+              value={vacancyData.descripcion}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+          </Row>
+          <Form.Group as={Col} controlId="formRequisitos">
+            <Form.Label>Requisitos del Cargo</Form.Label>
+            <Form.Control
+              type="text"
+              as="textarea"  // Indica que el control es un textarea
+              rows={3} 
+              name="requisitos"
+              value={vacancyData.requisitos}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+        </Row>
+        <Row className="mb-3">
           <Form.Group as={Col} controlId="formCantidadDisponible">
             <Form.Label>Cantidad Disponible</Form.Label>
             <Form.Control

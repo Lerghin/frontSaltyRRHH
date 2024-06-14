@@ -35,7 +35,7 @@ const TablaUsers = ({ data, onDelete }) => {
   const handleDelete = async (id) => {
     if (window.confirm("¿Seguro que quieres borrar el usuario?")) {
       try {
-        await API.delete(`user/delete/${id}`);
+        await API.delete(`users/delete/${id}`);
         onDelete(id); 
         navigate('/users')
        
@@ -48,7 +48,7 @@ const TablaUsers = ({ data, onDelete }) => {
 
   return (    
     <tr>
-      <td className="namePatient">
+      <td>
         {firstName} {lastName}
       </td>
       <td>{cedula}</td>

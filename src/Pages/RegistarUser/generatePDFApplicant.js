@@ -37,7 +37,8 @@ export const generatePDFApplicant = (applicant, studiesList, jobsList, coursesLi
     ["País", applicant.country],
     ["Dirección", applicant.address],
     ["Teléfono", applicant.cellphone1],
-    ["Email", applicant.email]
+    ["Email", applicant.email],
+    ["Profesión u Oficio", applicant.nombreDeProfesion]
   ];
 
   doc.autoTable({

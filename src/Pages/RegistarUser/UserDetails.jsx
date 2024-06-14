@@ -75,6 +75,7 @@ const UserDetails = () => {
           <p className="card-text"><b>Email:</b> {applicant.email}</p>
           <p className="card-text"><b>Nacionalidad:</b> {applicant.nationality}</p>
           <p className="card-text"><b>País:</b> {applicant.country}</p>
+          <p className="card-text"><b>Profesión u Oficio:</b> {applicant.nombreDeProfesion}</p>
         </div>
       </div>
 

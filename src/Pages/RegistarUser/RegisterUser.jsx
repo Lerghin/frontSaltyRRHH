@@ -45,11 +45,9 @@ const RegisterUser = () => {
     state: "",
     parish: "",
     municipality: "",
-    position: {
-      positionApp: "",
-      salary: "",
-      disponibility: "",
-    },
+    salary: "",
+    disponibility: "",
+    
     studiesList: [
       {
         institutionName: "",
@@ -71,6 +69,7 @@ const RegisterUser = () => {
         startDate: "",
         endDate: "",
         reason: "",
+        nombreDeProfesion: "",
       },
     ],
     coursesList: [
@@ -324,9 +323,9 @@ const RegisterUser = () => {
               onChange={handleChange}
               required
             >
-              <MenuItem value="HOMBRE">Masculino</MenuItem>
-              <MenuItem value="MUJER">Femenino</MenuItem>
-              <MenuItem value="NO_DEFINIDO">OTRO</MenuItem>
+              <MenuItem value="MASCULINO">Masculino</MenuItem>
+              <MenuItem value="FEMENINO">Femenino</MenuItem>
+             
             </TextField>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -687,24 +686,26 @@ const RegisterUser = () => {
               Añadir Curso
             </Button>
           </Grid>
-
           <Grid item xs={12}>
             <TextField
-              label="Cargo al que Postula"
-              name="positionApp"
-              value={applicant.position.positionApp}
-              onChange={(e) => handleChangeList("position", 0, e)} // Usamos handleChangeList porque `position` es un objeto y no un array
+              label="Profesión"
+              name="nombreDeProfesion"
+              type="text"
+              placeholder="Ejemplo: Administrador, Contador, Diseñador Gráfico, Ayudante, Pasante"
+              value={applicant.nombreDeProfesion}
+              onChange={handleChange} 
               fullWidth
               required
             />
           </Grid>
+         
           <Grid item xs={12}>
             <TextField
               label="Sueldo al que aspira"
               name="salary"
               type="number"
-              value={applicant.position.salary}
-              onChange={(e) => handleChangeList("position", 0, e)} // Usamos handleChangeList porque `position` es un objeto y no un array
+              value={applicant.salary}
+              onChange={handleChange} 
               fullWidth
               required
             />
@@ -713,8 +714,8 @@ const RegisterUser = () => {
             <TextField
               label="Disponibilidad"
               name="disponibility"
-              value={applicant.position.disponibility}
-              onChange={(e) => handleChangeList("position", 0, e)} // Usamos handleChangeList porque `position` es un objeto y no un array
+              value={applicant.disponibility}
+              onChange={handleChange} 
               fullWidth
               required
             />

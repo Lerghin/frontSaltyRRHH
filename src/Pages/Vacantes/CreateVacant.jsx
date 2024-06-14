@@ -17,6 +17,8 @@ const CreateVacancy = () => {
     cantidadDisponible: 0,
     cantidadCubierta: 0,
     status: '',
+    descripcion: '',
+    requisitos: ''
   });
 
   // Manejar cambios en los campos del formulario
@@ -81,8 +83,6 @@ const CreateVacancy = () => {
               required
             />
           </Form.Group>
-          </Row>
-          <Row className="mb-3">
           <Form.Group as={Col} controlId="formCantidadCubierta">
             <Form.Label>Cantidad Cubierta</Form.Label>
             <Form.Control
@@ -93,6 +93,35 @@ const CreateVacancy = () => {
               required
             />
           </Form.Group>
+          </Row>
+          <Row className="mb-3">
+          <Form.Group as={Col} controlId="formDescripcion">
+            <Form.Label>Descripción del Cargo</Form.Label>
+            <Form.Control
+            as="textarea"  // Indica que el control es un textarea
+            rows={3} 
+              type="text"
+              name="descripcion"
+              value={vacancyData.descripcion}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+          <Form.Group as={Col} controlId="formRequisitos">
+            <Form.Label>Requisitos del Cargo</Form.Label>
+            <Form.Control
+              as="textarea"  // Indica que el control es un textarea
+              rows={3} 
+              type="text"
+              name="requisitos"
+              value={vacancyData.requisitos}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+        </Row>
+          <Row className="mb-3">
+          
           <Form.Group as={Col} controlId="formStatus">
             <Form.Label>Status</Form.Label>
             <Form.Control

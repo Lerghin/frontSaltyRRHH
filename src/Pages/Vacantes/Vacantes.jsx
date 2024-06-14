@@ -133,12 +133,13 @@ const Vacantes = () => {
           {results.length > 0 ? (
             <Table striped bordered hover>
               <thead>
-                <tr>
-                  <th>Fecha</th>
+                <tr >
+                  <th  >Fecha</th>
                   <th>Nombre De la Vacante</th>
                   <th>Cantidad Disponible</th>
                   <th>Cantidad Cubierta</th>
                   <th>Estatus de la Vacante</th>
+                  
                   <th>Solicitantes</th>
                   {userRole === "USER" ? null : <th></th>}
                 </tr>
@@ -158,7 +159,7 @@ const Vacantes = () => {
             <div className="d-flex justify-center gap-5 p-4 h-100vh  ">
                <p>No se encontraron vacantes.</p>
            
-            <Button onClick={() => navigate('/vacantes')} variant="secondary">
+            <Button onClick={() => navigate('/homeUser')} variant="secondary">
               <RiArrowGoBackFill /> Atras
             </Button>
           </div>

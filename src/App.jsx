@@ -18,6 +18,8 @@ import CreateVacant from "./Pages/Vacantes/CreateVacant";
 import EditVacancy from "./Pages/Vacantes/EditVacancy";
 import CreateUser from "./Pages/RegistarUser/CreateUser";
 import Users from "./Pages/Users";
+import Applicants from "./Pages/RegistarUser/Applicants";
+import CreateAdmin from "./Pages/CreateAdmin";
 
 
 const ProtectedRoute = () => {
@@ -54,10 +56,7 @@ const router = createBrowserRouter([
         children: [
         
         
-          {
-            path: '/registerUser/:id',
-            element: <RegisterUser/>
-          },
+          
           {
             path: '/homeUser',
             element: <HomeUser />
@@ -75,22 +74,44 @@ const router = createBrowserRouter([
             element: <UserDetails/>
           },
           
-          {
-            path: '/createVacant',
-            element: <CreateVacant/>
-          },
-          {
-            path: '/editVacant/:id',
-            element: <EditVacancy/>
-          },
-          {
-            path: '/createUser',
-            element:<CreateUser/>
-          },
+        
+        
           {
             path: '/users',
             element:<Users/>
           },
+          {
+            path: '/aplicantes',
+            element:<Applicants/>
+          },
+          {
+            path: '/',
+            element: <MainLayout/>,
+            children: [
+              {
+                path: '/createAdmin',
+                element:<CreateAdmin />
+              },
+              {
+                path: '/createUser',
+                element:<CreateUser/>
+              },
+              {
+                path: '/registerUser/:id',
+                element: <RegisterUser/>
+              },
+              {
+                path: '/createVacant',
+                element: <CreateVacant/>
+              },
+              {
+                path: '/editVacant/:id',
+                element: <EditVacancy/>
+              },
+        
+            ]
+          },
+         
         ]
       }
     ]

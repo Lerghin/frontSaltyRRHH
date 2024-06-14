@@ -9,13 +9,16 @@ import {
   MenuItem,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import { API } from "../Utils/axios";
 
 import { useNavigate } from "react-router-dom";
-import { LS } from "../Utils/LS";
-import { useDispatch } from "react-redux";
-import { signup } from "../Store/Actions/authActions";
-import '../Pages/Css/home.css'
+
+import { RiArrowGoBackFill } from 'react-icons/ri';
+import { API } from "../Utils/axios";
+
+
+
+
+
 
 const Root = styled("div")({
   minHeight: "100vh",
@@ -46,16 +49,10 @@ const StyledButton = styled(Button)({
   },
 });
 
-const Link = styled("a")({
-  marginTop: "16px",
-  display: "block",
-  textAlign: "center",
-  color: "#000",
-  textDecoration: "none",
-});
 
-const SignupForm = () => {
-  const dispatch = useDispatch();
+
+const CreateAdmin = () => {
+ 
   const [formData, setFormData] = useState({
     username: "",
     firstName: "",
@@ -75,16 +72,10 @@ const SignupForm = () => {
   
     console.log(formData)
     try {
-      const res= await API.post("auth/register/user", formData);
-      const userId = res.data;
-      ///////console.log(userId.id)
-      dispatch(signup(res.data));
-        const { token, role } = res.data;
-        LS.set('token', token);
-        LS.set('role', role);
-    
-        alert('Estas registrado Satisfactoriamente');
-        navigate(`/registerUser/${userId.id}`)
+     await API.post("/auth/admin/register", formData);
+     
+        alert('Usuario registrado Satisfactoriamente');
+       navigate('/users')
       
     } catch (error) {
       alert(error.response.data);
@@ -97,7 +88,7 @@ const SignupForm = () => {
         <Grid container justifyContent="center">
           <Grid item>
             <StyledPaper elevation={3}>
-              <Title variant="h5">Registrarse</Title>
+              <Title variant="h5">Registrar Administrador</Title>
 
               <TextField
                 label="Nombre"
@@ -149,7 +140,6 @@ const SignupForm = () => {
                 label="Nombre de usuario"
                 variant="outlined"
                 fullWidth
-                type="email"
                 margin="normal"
                 name="username"
                 value={formData.username}
@@ -172,9 +162,16 @@ const SignupForm = () => {
                 fullWidth
                 onClick={handleSignup}
               >
-                Registrarse
+                Registrar
               </StyledButton>
-              <Link href="/signin">¿Ya tienes una cuenta?<div className="register">Inicia Sesión</div></Link>
+              
+           
+           <div className="text-center p-2">
+          <Button onClick={() => navigate('/homeUser')} variant="secondary">
+            <RiArrowGoBackFill /> Cancelar
+          </Button>
+          </div>
+      
             </StyledPaper>
           </Grid>
         </Grid>
@@ -183,4 +180,4 @@ const SignupForm = () => {
   );
 };
 
-export default SignupForm;
+export default CreateAdmin;

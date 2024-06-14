@@ -135,9 +135,11 @@ const Signin = () => {
                   Iniciar Sesión
                 </StyledButton>
               </form>
+              
               <Link href="/">
-                ¿No tienes una cuenta? Regístrate
+                ¿No tienes una cuenta?<div className="register">Regístrate</div> 
               </Link>
+            
             </StyledPaper>
           </Grid>
         </Grid>

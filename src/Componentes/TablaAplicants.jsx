@@ -1,13 +1,17 @@
-import {  Link} from "react-router-dom";
+import {  Link, useNavigate} from "react-router-dom";
 import "../Pages/Css/home.css";
-
+import "../Pages/Css/home.css";
+import { FaUserEdit } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { LS } from "../Utils/LS";
+import { MdDeleteForever } from "react-icons/md";
+import { API } from "../Utils/axios";
 
 
 
 
-const TablaAplicants = ({ data }) => {
+
+const TablaAplicants = ({ data, onDelete }) => {
   const {
     idApplicant,
     firstName,
@@ -16,12 +20,13 @@ const TablaAplicants = ({ data }) => {
     sexo,
   edad,
    state,
-   municipality
+   municipality,
+   nombreDeProfesion
  
   } = data;
   
   const [userRole, setUserRole] = useState(null);
- 
+ const navigate= useNavigate()
   useEffect(() => {
     const role = LS.getText("role");
     if (role) {
@@ -29,6 +34,20 @@ const TablaAplicants = ({ data }) => {
     }
  
   }, []);
+  
+  const handleDelete = async (idApplicant) => {
+    if (window.confirm("¿Seguro que quieres borrar?")) {
+      try {
+        await API.delete(`/app/borrar/${idApplicant}`);
+        onDelete(idApplicant); 
+        navigate('/aplicantes')
+       
+      } catch (error) {
+        alert(error)
+       
+      }
+    }
+  };
 
   
 
@@ -38,16 +57,24 @@ const TablaAplicants = ({ data }) => {
   
 
   return (    
-    <tr>
-        <td className="namePatient">  <Link to={`/watchApp/${idApplicant}`}>{firstName} {lastName} </Link></td>
+    <tr >
+        <td className="namePatient  ">  <Link   to={`/watchApp/${idApplicant}`} className="link-unstyled" >{firstName} {lastName} </Link></td>
       <td>
         {cedula}
       </td>
     
-      <td>{  edad}</td>
+      <td>{ edad}</td>
       <td>{sexo}</td>
-      <td>{   state}</td>
-      <td>{   municipality}</td>
+      <td>{ state}</td>
+      <td>{ municipality}</td>
+      <td>{ nombreDeProfesion}</td>
+      
+     {userRole==='USER'? null :(<td  >
+      <FaUserEdit className="m-2 my-2 h-5" onClick={() => navigate(`/editApp/${idApplicant}`)}  /> 
+      
+        <MdDeleteForever className="m-2 "  onClick={()=>handleDelete(idApplicant) }/>
+       
+      </td>)}
    
   
     </tr>

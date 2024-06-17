@@ -20,6 +20,7 @@ import CreateUser from "./Pages/RegistarUser/CreateUser";
 import Users from "./Pages/Users";
 import Applicants from "./Pages/RegistarUser/Applicants";
 import CreateAdmin from "./Pages/CreateAdmin";
+import VerCV from "./Pages/RegistarUser/VerCv";
 
 
 const ProtectedRoute = () => {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
           
           {
             path: '/homeUser',
+            element: <HomeUser />
+          },
+          {
+            path: '/homeUser/:idApplicant',
             element: <HomeUser />
           },
           {
@@ -108,7 +113,10 @@ const router = createBrowserRouter([
                 path: '/editVacant/:id',
                 element: <EditVacancy/>
               },
-        
+              {
+                path: '/verCV/:idApplicant',
+                element: <VerCV/>
+              },
             ]
           },
          

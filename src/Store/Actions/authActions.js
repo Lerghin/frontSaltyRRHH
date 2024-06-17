@@ -48,6 +48,11 @@ export const logoutUser=()=>{
 
     return (dispatch)=>{
         LS.rm('token');
+        LS.rm('role');
+        LS.rm('userId');
+        LS.rm('idApplicant');
+        
+        
         dispatch(logout())
     };
 };

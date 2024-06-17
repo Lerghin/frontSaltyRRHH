@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   TextField,
@@ -17,16 +17,20 @@ import { CiCircleRemove } from "react-icons/ci";
 import "react-toastify/dist/ReactToastify.css";
 import { nationalities } from "../../Utils/nationalities";
 
-const RegisterUser = () => {
+import { RiArrowGoBackFill } from 'react-icons/ri';
+
+
+const verCv = () => {
   const params = useParams();
-  const userId = `${params.id}`;
+  const idApplicant= params.idApplicant;
   const navigate = useNavigate();
- 
+  
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [userId, setUserId] = useState(null);
+
   const [applicant, setApplicant] = useState({
-    user: {
-      id: userId,
-      role: "USER",
-    },
+    idApplicant:idApplicant,
     firstName: "",
     secondName: "",
     lastName: "",
@@ -46,41 +50,52 @@ const RegisterUser = () => {
     municipality: "",
     salary: "",
     disponibility: "",
-    
-    studiesList: [
-      {
-        institutionName: "",
-        degree: "",
-        startDate: "",
-        endDate: "",
-        description: "",
-      },
-    ],
-    jobsList: [
-      {
-        jobName: "",
-        address: "",
-        phone: "",
-        position: "",
-        peopleSubordinated: "",
-        positionBoss: "",
-        description: "",
-        startDate: "",
-        endDate: "",
-        reason: "",
-        nombreDeProfesion: "",
-      },
-    ],
-    coursesList: [
-      {
-        nameCourse: "",
-        nameInstitution: "",
-        date: "",
-      },
-    ],
-  });
+    studiesList: [],
+    jobsList: [],
+    coursesList: [],
+    nombreDeProfesion: "",
+    user: {
+      id:"",
 
+     
+    }
+  });
   
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const [
+          applicantResponse,
+          studiesResponse,
+          jobsResponse,
+          coursesResponse
+        ] = await Promise.all([
+          API.get(`/applicants/traer/${params.idApplicant}`),
+          API.get(`/applicants/studies/${params.idApplicant}`),
+          API.get(`/applicants/jobs/${params.idApplicant}`),
+          API.get(`/applicants/courses/${params.idApplicant}`),
+
+        ]);
+
+        setApplicant({
+          ...applicantResponse.data,
+          studiesList: studiesResponse.data || [],
+          jobsList: jobsResponse.data || [],
+          coursesList: coursesResponse.data || [],
+ 
+        });
+        
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [params.idApplicant]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -92,57 +107,34 @@ const RegisterUser = () => {
 
   const handleChangeList = (listName, index, e) => {
     const { name, value } = e.target;
-    if (listName === "position") {
-      setApplicant((prevApplicant) => ({
-        ...prevApplicant,
-        position: {
-          ...prevApplicant.position,
-          [name]: value,
-        },
-      }));
-    } else {
-      setApplicant((prevApplicant) => {
-        const updatedList = [
-          ...(Array.isArray(prevApplicant[listName])
-            ? prevApplicant[listName]
-            : []),
-        ];
-        updatedList[index][name] = value;
-        return { ...prevApplicant, [listName]: updatedList };
-      });
-    }
+    setApplicant((prevApplicant) => {
+      const updatedList = [...prevApplicant[listName]];
+      updatedList[index][name] = value;
+      return { ...prevApplicant, [listName]: updatedList };
+    });
   };
 
   const handleAddItem = (listName) => {
-    if (listName === "position") {
-      // No agregamos un nuevo objeto `position`, ya que solo debería haber uno
-      console.log("You can't add more positions.");
-    } else {
-      setApplicant((prevApplicant) => ({
-        ...prevApplicant,
-        [listName]: [
-          ...(Array.isArray(prevApplicant[listName])
-            ? prevApplicant[listName]
-            : []),
-          {
-            institutionName: "",
-            degree: "",
-            startDate: "",
-            endDate: "",
-            description: "",
-          },
-        ],
-      }));
-    }
+    setApplicant((prevApplicant) => ({
+      ...prevApplicant,
+      [listName]: [
+        ...prevApplicant[listName],
+        {
+          institutionName: "",
+          degree: "",
+          startDate: "",
+          endDate: "",
+          description: "",
+        },
+      ],
+    }));
   };
+
+ 
 
   const handleRemoveItem = (listName, index) => {
     setApplicant((prevApplicant) => {
-      const updatedList = [
-        ...(Array.isArray(prevApplicant[listName])
-          ? prevApplicant[listName]
-          : []),
-      ];
+      const updatedList = [...prevApplicant[listName]];
       updatedList.splice(index, 1);
       return { ...prevApplicant, [listName]: updatedList };
     });
@@ -151,47 +143,37 @@ const RegisterUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const isConfirmed = confirm(
+    const isConfirmed = window.confirm(
       "Confirma que todos sus datos son correctos y que pueden ser verificables?"
     );
 
     if (!isConfirmed) {
       return;
     }
+
     try {
       console.log(applicant)
-      const response = await API.post("/app/create", {
-        ...applicant,
-        user: {
-          id: userId, 
-          role: "USER",
-        },
-      });
-    
-      const idApplicant = response.data.idApplicant;
-    localStorage.setItem('idApplicant', idApplicant);
-      alert("Usuario registrado con éxito");
-     
+      await API.put('app/editar', applicant);
 
-      toast.success("Usuario registrado con éxito");
-      navigate(`/homeUser/${idApplicant}`);
+      toast.success("Usuario actualizado con éxito");
+      navigate("/homeUser");
     } catch (error) {
       alert(error.response.data);
     }
   };
 
-  /* if (loading) {
-    return <CircularProgress />;
+  if (loading) {
+    return <p>Cargando...</p>;
   }
 
   if (error) {
     return <p>Error: {error}</p>;
-  }*/
+  }
 
   return (
     <Container maxWidth="md">
       <Typography variant="h4" component="h1" gutterBottom>
-        Carga Tu CV
+        Editar CV
       </Typography>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={3}>
@@ -294,7 +276,6 @@ const RegisterUser = () => {
             >
               <MenuItem value="MASCULINO">Masculino</MenuItem>
               <MenuItem value="FEMENINO">Femenino</MenuItem>
-             
             </TextField>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -655,6 +636,7 @@ const RegisterUser = () => {
               Añadir Curso
             </Button>
           </Grid>
+
           <Grid item xs={12}>
             <TextField
               label="Profesión"
@@ -662,19 +644,19 @@ const RegisterUser = () => {
               type="text"
               placeholder="Ejemplo: Administrador, Contador, Diseñador Gráfico, Ayudante, Pasante"
               value={applicant.nombreDeProfesion}
-              onChange={handleChange} 
+              onChange={handleChange}
               fullWidth
               required
             />
           </Grid>
-         
+
           <Grid item xs={12}>
             <TextField
               label="Sueldo al que aspira"
               name="salary"
               type="number"
               value={applicant.salary}
-              onChange={handleChange} 
+              onChange={handleChange}
               fullWidth
               required
             />
@@ -684,17 +666,24 @@ const RegisterUser = () => {
               label="Disponibilidad"
               name="disponibility"
               value={applicant.disponibility}
-              onChange={handleChange} 
+              onChange={handleChange}
               fullWidth
               required
             />
           </Grid>
-
+              <div  className="hidden" value={applicant.user.id}
+              onChange={handleChange}></div>
           {/* Botón de Enviar */}
           <Grid item xs={12}>
-            <Button type="submit" variant="contained" color="primary">
-              Registrar
+       
+ 
+        <Button onClick={() => navigate('/homeUser')} variant="secondary"><RiArrowGoBackFill />Volver</Button>
+        <Button type="submit" variant="contained" color="primary">
+              Editar
             </Button>
+     
+            
+            <br /><br />
           </Grid>
         </Grid>
       </form>
@@ -702,4 +691,4 @@ const RegisterUser = () => {
   );
 };
 
-export default RegisterUser;
+export default verCv;

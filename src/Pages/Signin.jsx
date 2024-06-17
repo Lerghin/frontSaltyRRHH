@@ -84,11 +84,12 @@ const Signin = () => {
       const res = await API.post('/auth/login', userData);
       dispatch(login(res.data));
       if (res.status === 200) {
-       
+        const userId = res.data.id;
        
         const { token, role } = res.data;
         LS.set('token', token);
         LS.set('role', role);
+        LS.set('userId', userId);
         
           navigate('/homeUser');
        
@@ -113,7 +114,7 @@ const Signin = () => {
                   Iniciar Sesión
                 </Title>
                 <TextField
-                  label="Correo electrónico"
+                  label="Inserte su Usuario"
                   variant="outlined"
                   fullWidth
                   margin="normal"

@@ -77,11 +77,12 @@ const SignupForm = () => {
     try {
       const res= await API.post("auth/register/user", formData);
       const userId = res.data;
-      ///////console.log(userId.id)
+     
       dispatch(signup(res.data));
-        const { token, role } = res.data;
+        const { token, role} = res.data;
         LS.set('token', token);
         LS.set('role', role);
+        LS.set('userID', userId);
     
         alert('Estas registrado Satisfactoriamente');
         navigate(`/registerUser/${userId.id}`)

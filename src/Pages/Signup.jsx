@@ -76,16 +76,18 @@ const SignupForm = () => {
     console.log(formData)
     try {
       const res= await API.post("auth/register/user", formData);
-      const userId = res.data;
+      const userId = res.data.id;
+   
+
      
       dispatch(signup(res.data));
         const { token, role} = res.data;
         LS.set('token', token);
         LS.set('role', role);
-        LS.set('userID', userId);
+        LS.set('userId', userId);
     
         alert('Estas registrado Satisfactoriamente');
-        navigate(`/registerUser/${userId.id}`)
+        navigate(`/registerUser/${userId}`)
       
     } catch (error) {
       alert(error.response.data);

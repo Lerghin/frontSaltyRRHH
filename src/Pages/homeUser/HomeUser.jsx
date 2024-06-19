@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import  { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LS } from '../../Utils/LS';
 import SideBarUsers from '../../Componentes/SideBarUsers';
 import { API } from '../../Utils/axios';
@@ -24,7 +24,7 @@ const [idApplicant, setIdApplicant]= useState(null);
       setUserRole(role.trim());
     }
     if (idUser) {
-      setUserId(idUser.trim());
+      setUserId(idUser.trim().toString());
     }
   }, []);
 
@@ -72,7 +72,7 @@ const [idApplicant, setIdApplicant]= useState(null);
             <Card.Body>
               <Card.Title><b>Vacantes</b></Card.Title>
               <Card.Text>Aplica a las mejores ofertas laborales</Card.Text>
-              <Button onClick={() => navigate('/vacantesUser')} variant="btn btn-secondary">Ver </Button>
+              <Button onClick={() => navigate('/vacantUser')} variant="btn btn-secondary">Ver </Button>
             </Card.Body>
           </Card>
         )}
@@ -83,6 +83,18 @@ const [idApplicant, setIdApplicant]= useState(null);
               <Card.Title><b>Mi CV</b></Card.Title>
               <Card.Text>Puedes añadir información o editar tu CV</Card.Text>
               <Button onClick={() => navigate(`/verCv/${idApplicant}`)} variant="btn btn-secondary">IR </Button>
+            </Card.Body>
+          </Card>
+        )}
+         {userRole !== 'ADMIN' && userDetails && ( // Asegúrate de que userDetails esté disponible antes de renderizar esta parte
+          <Card className="cardIn" style={{ width: '18rem' }}>
+            <Card.Img className="img-card" variant="top" src="https://static.vecteezy.com/system/resources/previews/003/421/759/non_2x/checklist-to-do-list-concept-business-idea-vector.jpg" />
+            <Card.Body>
+              <Card.Title><b>Mis Postulaciones</b></Card.Title>
+      
+              <Card.Text>Ver mis postulaciones</Card.Text>
+              <br /> 
+              <Button onClick={() => navigate('/myapp')} variant="btn btn-secondary">IR </Button>
             </Card.Body>
           </Card>
         )}

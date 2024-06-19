@@ -110,6 +110,7 @@ const AplicantByVacacant = () => {
                   <th>Sexo</th>
                   <th>Estado</th>
                   <th>Municipio</th>
+                  <th>Profesión u Oficio</th>
                 
                
               

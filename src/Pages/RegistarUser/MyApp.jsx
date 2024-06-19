@@ -3,55 +3,77 @@ import Table from "react-bootstrap/Table";
 import "../Css/home.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { LS } from "../../Utils/LS";
-import TablaVacantes from "../../Componentes/TablaVacantes";
-import SideBarVacantes from "../../Componentes/SideBarVacantes";
+
+
 import { API } from "../../Utils/axios";
-import DatePicker from "react-datepicker";
+
 import {  Button } from 'react-bootstrap';
 import { RiArrowGoBackFill } from 'react-icons/ri';
 import { useNavigate } from "react-router-dom";
+import TablaMyApp from "../../Componentes/TablaMyApp";
+import SideBarUsers from "../../Componentes/SideBarUsers";
 
-const Vacantes = () => {
-  const [pacientes, setPacientes] = useState([]);
+const MyApp = () => {
+  const [vacantes, setVacantes] = useState([]);
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [userRole, setUserRole] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const navigate=useNavigate();
+ 
+  const [userID, setUserId] = useState(null);
 
+  const [idApplicant, setIdApplicant] = useState(null);
+  const navigate=useNavigate();
   useEffect(() => {
-    const role = LS.getText("role");
-    if (role) {
-      setUserRole(role.trim()); // Eliminar espacios extra si los hay
-    }
-  }, []);
+    const fetchUserData = async () => {
+      try {
+   
+        const idUser = await LS.getText('userId');
+
+       
+        if (idUser) {
+          setUserId(idUser.trim().toString());
+          
+          const userResponse = await API.get(`/users/${idUser}`);
+         
+          setIdApplicant(userResponse.data.idApplicant)
+        
+          
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        setError(error.message);
+      }
+    };
+
+    fetchUserData();
+  }, [idApplicant]);
 
   useEffect(() => {
     const fetchPacientes = async () => {
       try {
-        const response = await API.get("/vacant/get");
+        const response = await API.get(`/applicant/vacant/${idApplicant}`);
+ 
         const fetchedPat = response.data;
       
 
         // Ordenar las vacantes por fecha de manera descendente
-        const sortedPacientes = fetchedPat.sort((a, b) => {
+        const sortedVacancies = fetchedPat.sort((a, b) => {
           return new Date(b.fecha) - new Date(a.fecha);
         });
 
-        setPacientes(sortedPacientes);
-        setResults(sortedPacientes);
+        setVacantes(sortedVacancies);
+        setResults(sortedVacancies);
       } catch (error) {
         console.error("Error fetching vacantes:", error); // Log de error
-        setError(error.message);
+     
       } finally {
         setLoading(false);
       }
     };
 
     fetchPacientes();
-  }, []);
+  }, [idApplicant]);
 
   if (loading) {
     return <p>Cargando...</p>;
@@ -61,7 +83,7 @@ const Vacantes = () => {
     return <p>Error: {error}</p>;
   }
 
-  if (!pacientes || !results) {
+  if (!vacantes || !results) {
     return <p>No se encontró información de las vacantes.</p>;
   }
 
@@ -69,43 +91,20 @@ const Vacantes = () => {
     const searchTerm = e.target.value.toLowerCase();
     setSearch(searchTerm);
 
-    const filteredPatients = pacientes.filter(
+    const filteredPatients = vacantes.filter(
       (pat) =>
         pat.nombreVacante.toLowerCase().includes(searchTerm) ||
         pat.status.toLowerCase().includes(searchTerm)
     );
-    setResults(searchTerm.trim() === "" ? pacientes : filteredPatients);
+    setResults(searchTerm.trim() === "" ? vacantes : filteredPatients);
   };
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
 
-    if (date) {
-      const formattedDate = date.toISOString().split("T")[0];
-
-      const filteredCitas = pacientes.filter((pat) => {
-        return pat.fecha.includes(formattedDate);
-      });
-
-      setResults(filteredCitas);
-    } else {
-      setResults(pacientes);
-    }
-  };
-
-  const handleDelete = (id) => {
-    setResults((prevResults) =>
-      prevResults.filter((paciente) => paciente.id !== id)
-    );
-    setPacientes((prevPacientes) =>
-      prevPacientes.filter((paciente) => paciente.id !== id)
-    );
-  };
 
   return (
     <div className="home">
       <div>
-        <SideBarVacantes className="home-sidebar" />
+      <SideBarUsers className="home-sidebar" />
       </div>
 
       <div className="patientsTable">
@@ -119,15 +118,7 @@ const Vacantes = () => {
             className="form-control"
           />
           <br />
-          <div className="date-picker-container">
-            <DatePicker
-              selected={selectedDate}
-              onChange={handleDateChange}
-              dateFormat="yyyy-MM-dd"
-              className="form-control text-center "
-              placeholderText="Buscar por Fecha"
-            />
-          </div>
+        
         </div>
 
         <div className="flex-container responsive-table">
@@ -137,20 +128,19 @@ const Vacantes = () => {
                 <tr >
                   <th  >Fecha</th>
                   <th>Nombre De la Vacante</th>
-                  <th>Cantidad Disponible</th>
-                  <th>Cantidad Cubierta</th>
-                  <th>Estatus de la Vacante</th>
+                  <th>status</th>
+                  <th>descripcion</th>
+               
                   
-                  <th>Solicitantes</th>
-                  {userRole === "USER" ? null : <th></th>}
+         
                 </tr>
               </thead>
               <tbody>
-                {results.map((paciente) => (
-                  <TablaVacantes
-                    key={paciente.id}
-                    data={paciente}
-                    onDelete={handleDelete}
+                {results.map((vacante) => (
+                  <TablaMyApp
+                    key={vacante.id}
+                    data={vacante}
+                   
                   />
                 ))}
               </tbody>
@@ -171,4 +161,4 @@ const Vacantes = () => {
   );
 };
 
-export default Vacantes;
+export default MyApp;

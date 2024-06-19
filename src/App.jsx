@@ -21,6 +21,8 @@ import Users from "./Pages/Users";
 import Applicants from "./Pages/RegistarUser/Applicants";
 import CreateAdmin from "./Pages/CreateAdmin";
 import VerCV from "./Pages/RegistarUser/VerCv";
+import VacancyUser from "./Pages/Vacantes/VacancyUser";
+import MyApp from "./Pages/RegistarUser/MyApp";
 
 
 const ProtectedRoute = () => {
@@ -78,6 +80,10 @@ const router = createBrowserRouter([
             path: '/watchApp/:idApplicant',
             element: <UserDetails/>
           },
+          {
+            path: '/vacantUser',
+            element: <VacancyUser/>
+          },
           
         
         
@@ -88,6 +94,10 @@ const router = createBrowserRouter([
           {
             path: '/aplicantes',
             element:<Applicants/>
+          },
+          {
+            path: '/myApp',
+            element: <MyApp/>
           },
           {
             path: '/',
@@ -117,6 +127,8 @@ const router = createBrowserRouter([
                 path: '/verCV/:idApplicant',
                 element: <VerCV/>
               },
+             
+             
             ]
           },
          

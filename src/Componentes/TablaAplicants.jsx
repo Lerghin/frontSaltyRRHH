@@ -69,12 +69,7 @@ const TablaAplicants = ({ data, onDelete }) => {
       <td>{ municipality}</td>
       <td>{ nombreDeProfesion}</td>
       
-     {userRole==='USER'? null :(<td  >
-      <FaUserEdit className="m-2 my-2 h-5" onClick={() => navigate(`/editApp/${idApplicant}`)}  /> 
-      
-        <MdDeleteForever className="m-2 "  onClick={()=>handleDelete(idApplicant) }/>
-       
-      </td>)}
+    
    
   
     </tr>

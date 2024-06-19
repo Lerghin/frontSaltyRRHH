@@ -10,27 +10,21 @@ import {
   MenuItem,
 } from "@mui/material";
 import { API } from "../../Utils/axios";
-import { toast } from "react-toastify";
+
 import { IoAddCircleSharp } from "react-icons/io5";
 import { CiCircleRemove } from "react-icons/ci";
-
+import { RiArrowGoBackFill } from 'react-icons/ri';
 import "react-toastify/dist/ReactToastify.css";
 import { nationalities } from "../../Utils/nationalities";
 
-import { RiArrowGoBackFill } from 'react-icons/ri';
-
-
-const verCv = () => {
+const VerCv = () => {
   const params = useParams();
-  const idApplicant= params.idApplicant;
   const navigate = useNavigate();
-  
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [userId, setUserId] = useState(null);
-
   const [applicant, setApplicant] = useState({
-    idApplicant:idApplicant,
+    idApplicant: params.idApplicant,
     firstName: "",
     secondName: "",
     lastName: "",
@@ -54,14 +48,9 @@ const verCv = () => {
     jobsList: [],
     coursesList: [],
     nombreDeProfesion: "",
-    user: {
-      id:"",
-
-     
-    }
+    
   });
-  
-  
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -76,17 +65,15 @@ const verCv = () => {
           API.get(`/applicants/studies/${params.idApplicant}`),
           API.get(`/applicants/jobs/${params.idApplicant}`),
           API.get(`/applicants/courses/${params.idApplicant}`),
-
         ]);
-
+         
         setApplicant({
           ...applicantResponse.data,
           studiesList: studiesResponse.data || [],
           jobsList: jobsResponse.data || [],
           coursesList: coursesResponse.data || [],
- 
         });
-        
+      
       } catch (error) {
         setError(error.message);
       } finally {
@@ -130,8 +117,6 @@ const verCv = () => {
     }));
   };
 
- 
-
   const handleRemoveItem = (listName, index) => {
     setApplicant((prevApplicant) => {
       const updatedList = [...prevApplicant[listName]];
@@ -152,10 +137,8 @@ const verCv = () => {
     }
 
     try {
-      console.log(applicant)
       await API.put('app/editar', applicant);
-
-      toast.success("Usuario actualizado con éxito");
+     alert("Usuario actualizado con éxito");
       navigate("/homeUser");
     } catch (error) {
       alert(error.response.data);
@@ -251,7 +234,6 @@ const verCv = () => {
               <MenuItem value="EXTRANJERO">EXTRANJERO</MenuItem>
             </TextField>
           </Grid>
-
           <Grid item xs={12} sm={6}>
             <TextField
               label="Cédula"
@@ -286,13 +268,15 @@ const verCv = () => {
               value={applicant.birthDate}
               onChange={handleChange}
               fullWidth
-              InputLabelProps={{ shrink: true }}
+              InputLabelProps={{
+                shrink: true,
+              }}
               required
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              label="Email"
+              label="Correo Electrónico"
               name="email"
               value={applicant.email}
               onChange={handleChange}
@@ -302,7 +286,7 @@ const verCv = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              label="Teléfono 1"
+              label="Celular 1"
               name="cellphone1"
               value={applicant.cellphone1}
               onChange={handleChange}
@@ -312,21 +296,11 @@ const verCv = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              label="Teléfono 2"
+              label="Celular 2"
               name="cellphone2"
               value={applicant.cellphone2}
               onChange={handleChange}
               fullWidth
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label="Dirección"
-              name="address"
-              value={applicant.address}
-              onChange={handleChange}
-              fullWidth
-              required
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -334,6 +308,16 @@ const verCv = () => {
               label="País"
               name="country"
               value={applicant.country}
+              onChange={handleChange}
+              fullWidth
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Dirección"
+              name="address"
+              value={applicant.address}
               onChange={handleChange}
               fullWidth
               required
@@ -351,6 +335,16 @@ const verCv = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
+              label="Parroquia"
+              name="parish"
+              value={applicant.parish}
+              onChange={handleChange}
+              fullWidth
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
               label="Municipio"
               name="municipality"
               value={applicant.municipality}
@@ -361,17 +355,39 @@ const verCv = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              label="Parroquia"
-              name="parish"
-              value={applicant.parish}
+              label="Salario Deseado"
+              name="salary"
+              value={applicant.salary}
               onChange={handleChange}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Disponibilidad"
+              name="disponibility"
+              value={applicant.disponibility}
+              onChange={handleChange}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label="Profesión"
+              name="nombreDeProfesion"
+              type="text"
+              placeholder="Ejemplo: Administrador, Contador, Diseñador Gráfico, Ayudante, Pasante"
+              value={applicant.nombreDeProfesion}
+              onChange={handleChange} 
               fullWidth
               required
             />
           </Grid>
+         
+        </Grid>
 
-          {/* Estudios */}
-          <Grid item xs={12}>
+        {/* Estudios */}
+        <Grid item xs={12}>
             <Typography variant="h5" component="h2" gutterBottom>
               Estudios
             </Typography>
@@ -446,17 +462,14 @@ const verCv = () => {
                   </Grid>
                 </Grid>
               ))}
-            <Button
-              variant="outlined"
-              onClick={() => handleAddItem("studiesList")}
-              startIcon={<IoAddCircleSharp />}
-            >
-              Añadir Estudio
-            </Button>
-          </Grid>
+              </Grid>
+        <IconButton onClick={() => handleAddItem("studiesList")} aria-label="Agregar">
+          <IoAddCircleSharp />
+        </IconButton>
 
-          {/* Trabajos */}
-          <Grid item xs={12}>
+
+      {/* Trabajos */}
+      <Grid item xs={12}>
             <Typography variant="h5" component="h2" gutterBottom>
               Trabajos
             </Typography>
@@ -566,15 +579,12 @@ const verCv = () => {
                   </Grid>
                 </Grid>
               ))}
-            <Button
-              variant="outlined"
-              onClick={() => handleAddItem("jobsList")}
-              startIcon={<IoAddCircleSharp />}
-            >
-              Añadir Trabajo
-            </Button>
-          </Grid>
+              </Grid>
+        <IconButton onClick={() => handleAddItem("jobsList")} aria-label="Agregar">
+          <IoAddCircleSharp />
+        </IconButton>
 
+      
           {/* Cursos */}
           <Grid item xs={12}>
             <Typography variant="h5" component="h2" gutterBottom>
@@ -628,67 +638,23 @@ const verCv = () => {
                   </Grid>
                 </Grid>
               ))}
-            <Button
-              variant="outlined"
-              onClick={() => handleAddItem("coursesList")}
-              startIcon={<IoAddCircleSharp />}
-            >
-              Añadir Curso
-            </Button>
+           
           </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              label="Profesión"
-              name="nombreDeProfesion"
-              type="text"
-              placeholder="Ejemplo: Administrador, Contador, Diseñador Gráfico, Ayudante, Pasante"
-              value={applicant.nombreDeProfesion}
-              onChange={handleChange}
-              fullWidth
-              required
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              label="Sueldo al que aspira"
-              name="salary"
-              type="number"
-              value={applicant.salary}
-              onChange={handleChange}
-              fullWidth
-              required
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label="Disponibilidad"
-              name="disponibility"
-              value={applicant.disponibility}
-              onChange={handleChange}
-              fullWidth
-              required
-            />
-          </Grid>
-              <div  className="hidden" value={applicant.user.id}
-              onChange={handleChange}></div>
-          {/* Botón de Enviar */}
-          <Grid item xs={12}>
-       
- 
-        <Button onClick={() => navigate('/homeUser')} variant="secondary"><RiArrowGoBackFill />Volver</Button>
-        <Button type="submit" variant="contained" color="primary">
-              Editar
-            </Button>
-     
-            
-            <br /><br />
-          </Grid>
+          <IconButton onClick={() => handleAddItem("coursesList")} aria-label="Agregar">
+          <IoAddCircleSharp />
+        </IconButton>
+          
+        <Grid item xs={12}>
+          <Button type="submit" variant="contained" color="primary">
+            Guardar Cambios
+          </Button>
         </Grid>
       </form>
+      <Button onClick={() => navigate("/homeUser")} startIcon={<RiArrowGoBackFill />}>
+        Volver
+      </Button>
     </Container>
   );
 };
 
-export default verCv;
+export default VerCv;

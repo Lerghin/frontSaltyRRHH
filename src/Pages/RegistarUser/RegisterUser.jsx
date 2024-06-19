@@ -20,7 +20,9 @@ import { nationalities } from "../../Utils/nationalities";
 const RegisterUser = () => {
   const params = useParams();
   const userId = `${params.id}`;
+
   const navigate = useNavigate();
+  
  
   const [applicant, setApplicant] = useState({
     user: {
@@ -159,7 +161,7 @@ const RegisterUser = () => {
       return;
     }
     try {
-      console.log(applicant)
+  
       const response = await API.post("/app/create", {
         ...applicant,
         user: {
@@ -167,14 +169,15 @@ const RegisterUser = () => {
           role: "USER",
         },
       });
-    
+     const res= response.data
+     console.log(res)
       const idApplicant = response.data.idApplicant;
     localStorage.setItem('idApplicant', idApplicant);
       alert("Usuario registrado con éxito");
      
 
       toast.success("Usuario registrado con éxito");
-      navigate(`/homeUser/${idApplicant}`);
+      navigate('/homeUser');
     } catch (error) {
       alert(error.response.data);
     }

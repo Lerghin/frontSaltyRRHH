@@ -122,7 +122,7 @@ const Applicants = () => {
                   <th>Municipio</th>
                   <th>Profesión u Oficio</th>
 
-                  <th></th>
+                
                 
                
               

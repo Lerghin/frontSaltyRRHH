@@ -38,7 +38,7 @@ const ResponsiveSideBar = () => {
     <div className="sidebar-custom">
       <CDBSidebar textColor="#fff" backgroundColor="#2584A7 ">
         <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
-          <a href="/homeUser" className="text-decoration-none" style={{ color: "inherit" }}>
+          <a href="#" className="text-decoration-none" style={{ color: "inherit" }}>
             Menu
           </a>
         </CDBSidebarHeader>

@@ -1,11 +1,13 @@
+// Ajustes en VacancyUser.js
 import  { useState, useEffect } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import VacancyCard from '../../Componentes/VacancyCard';
 import { API } from '../../Utils/axios';
 import { useNavigate } from 'react-router-dom';
 import { LS } from '../../Utils/LS';
-
 import SideBarUsers from '../../Componentes/SideBarUsers';
+import './VacancyUser.css'; // Asegúrate de que el archivo CSS esté en el mismo directorio
+
 const VacancyUser = () => {
   const [vacancies, setVacancies] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,21 +19,14 @@ const VacancyUser = () => {
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
 
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-
         const idUser = await LS.getText('userId');
-
-       
         if (idUser) {
           setUserId(idUser.trim().toString());
-          
           const userResponse = await API.get(`/users/${idUser}`);
-          setIdApplicant(userResponse.data.idApplicant)
-
-          
+          setIdApplicant(userResponse.data.idApplicant);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -41,6 +36,7 @@ const VacancyUser = () => {
 
     fetchUserData();
   }, [idApplicant]);
+
   const searcher = (e) => {
     const searchTerm = e.target.value.toLowerCase();
     setSearch(searchTerm);
@@ -52,19 +48,19 @@ const VacancyUser = () => {
     );
     setResults(searchTerm.trim() === "" ? vacancies : filteredPatients);
   };
+
   useEffect(() => {
     const fetchVacancies = async () => {
       try {
         const response = await API.get("/vacant/get");
         const fetchedVacancies = response.data;
 
-        // Ordenar las vacantes por fecha de manera descendente
         const sortedVacancies = fetchedVacancies.sort((a, b) => {
           return new Date(b.fecha) - new Date(a.fecha);
         });
 
         setVacancies(sortedVacancies);
-        setResults(sortedVacancies)
+        setResults(sortedVacancies);
       } catch (error) {
         console.error("Error fetching vacantes:", error);
         setError(error.message);
@@ -83,14 +79,11 @@ const VacancyUser = () => {
   const handleApply = async (vacancyId, idApplicant) => {
     try {
       const response = await API.post(`${idApplicant}/apply/${vacancyId}`);
-      alert("Te has postulado Exitosamente")
-      GoBack()
+      alert("Te has postulado Exitosamente");
+      GoBack();
       console.log("Application successful:", response.data);
-      // Aquí puedes agregar lógica adicional después de aplicar a la vacante
     } catch (error) {
-    
-      alert( error.response.data)
-     
+      alert(error.response.data);
     }
   };
 
@@ -107,42 +100,38 @@ const VacancyUser = () => {
   }
 
   return (
-    <div className="home">
-    <div>
+    <div className="vacancy-user-page">
       <SideBarUsers className="home-sidebar" />
-    </div>
-    <Container>
-  
-        <div className="m-2">
-          <br></br>
-          <input
-            style={{ textAlign: "center" }}
-            value={search}
-            onChange={searcher}
-            type="text"
-            placeholder="Escoge Tú Vacante"
-            className="form-control"
-          />
+      <div className="vacancy-content">
+        <Container>
+          <div className="m-2">
+            <br />
+            <input
+              style={{ textAlign: "center" }}
+              value={search}
+              onChange={searcher}
+              type="text"
+              placeholder="Escoge Tú Vacante"
+              className="form-control"
+            />
+            <br />
+            <div className='text-center'>
+              <Button onClick={GoBack} variant="secondary">Volver a Home</Button>
+            </div>
+          </div>
           <br />
-          <div className='text-center'>
-        <Button onClick={GoBack} variant="secondary">Volver a Home</Button>
+          <h1 className='text-center'>Vacantes Disponibles</h1>
+          <Row xs={1} md={2} lg={3} className="g-4">
+            {results.map((vacancy) => (
+              <Col key={vacancy.id}>
+                <VacancyCard vacancy={vacancy} onApply={() => handleApply(vacancy.id, idApplicant)} />
+              </Col>
+            ))}
+          </Row>
+        </Container>
       </div>
-        </div>
- 
-    <br></br>
-    <h1 className='text-center'>Vacantes Disponibles</h1>
-      <Row xs={1} md={2} lg={3} className="g-4">
-      {results.map((vacancy) => (
-          <Col key={vacancy.id}>
-            <VacancyCard vacancy={vacancy} onApply={() => handleApply(vacancy.id, idApplicant)} />
-          </Col>
-        ))}
-      </Row>
-      
-    </Container>
     </div>
   );
 };
 
 export default VacancyUser;
-

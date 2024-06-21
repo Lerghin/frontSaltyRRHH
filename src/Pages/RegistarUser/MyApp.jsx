@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
-import "../Css/home.css";
+
 import "react-datepicker/dist/react-datepicker.css";
 import { LS } from "../../Utils/LS";
 
@@ -102,7 +102,7 @@ const MyApp = () => {
 
 
   return (
-    <div className="home">
+    <div className="home ">
       <div>
       <SideBarUsers className="home-sidebar" />
       </div>

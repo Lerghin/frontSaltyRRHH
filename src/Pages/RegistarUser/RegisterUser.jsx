@@ -281,7 +281,9 @@ const RegisterUser = () => {
               onChange={handleChange}
               fullWidth
               required
+           
             />
+            <span  className="text-red-600">Nota: debe ser la misma cedula con la cual te registraste </span>
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -660,7 +662,7 @@ const RegisterUser = () => {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              label="Profesión"
+              label="Profesión u Oficio"
               name="nombreDeProfesion"
               type="text"
               placeholder="Ejemplo: Administrador, Contador, Diseñador Gráfico, Ayudante, Pasante"

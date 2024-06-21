@@ -1,0 +1,37 @@
+/* VacancyUser.css */
+.vacancy-user-page {
+    display: flex;
+    min-height: 100vh; /* Asegura que ocupe toda la altura de la ventana */
+  }
+  
+  .home-sidebar {
+    flex: 0 0 250px; /* Ancho fijo para la barra lateral */
+    background-color: #f8f9fa; /* Color de fondo */
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+    position: sticky; /* Permanece en su lugar al hacer scroll */
+    top: 0; /* Se pega al borde superior */
+  }
+  
+  .vacancy-content {
+    flex: 1; /* El contenido principal ocupa el resto del espacio */
+    padding: 20px; /* Añade un poco de espacio alrededor del contenido */
+    overflow-y: auto; /* Permite desplazamiento vertical si es necesario */
+  }
+  
+  .vacancy-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    margin-left: 20px; /* Aumenta el margen a la izquierda */
+  }
+  
+  @media (max-width: 768px) {
+    .home-sidebar {
+      display: none; /* Oculta la barra lateral en pantallas pequeñas */
+    }
+    
+    .vacancy-content {
+      margin-left: 0; /* Quita el margen en pantallas pequeñas */
+    }
+  }
+  

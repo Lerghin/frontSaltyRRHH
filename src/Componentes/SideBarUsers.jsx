@@ -9,9 +9,9 @@ import {
   import { NavLink } from "react-router-dom";
   import { useEffect, useState } from "react";
   import { LS } from "../Utils/LS";
-  import './ResponsiveSideBar.css'; // Import styles
   import { useDispatch } from "react-redux";
   import { logoutUser } from "../Store/Actions/authActions";
+  import './ResponsiveSideBar.css';
   
   const SideBarUsers= () => {
     const [userRole, setUserRole] = useState(null);
@@ -38,7 +38,7 @@ import {
       <div className="sidebar-custom">
         <CDBSidebar textColor="#fff" backgroundColor="#2584A7 ">
           <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
-            <a href="/homeUser" className="text-decoration-none" style={{ color: "inherit" }}>
+            <a href="#" className="text-decoration-none" style={{ color: "inherit" }}>
               Menu
             </a>
           </CDBSidebarHeader>

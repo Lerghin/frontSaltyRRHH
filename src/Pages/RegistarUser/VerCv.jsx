@@ -48,6 +48,7 @@ const VerCv = () => {
     jobsList: [],
     coursesList: [],
     nombreDeProfesion: "",
+   
     
   });
 
@@ -55,34 +56,65 @@ const VerCv = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [
-          applicantResponse,
-          studiesResponse,
-          jobsResponse,
-          coursesResponse
-        ] = await Promise.all([
-          API.get(`/applicants/traer/${params.idApplicant}`),
-          API.get(`/applicants/studies/${params.idApplicant}`),
-          API.get(`/applicants/jobs/${params.idApplicant}`),
-          API.get(`/applicants/courses/${params.idApplicant}`),
-        ]);
-         
+        const applicantResponse = await API.get(`/applicants/traer/${params.idApplicant}`);
+        
+        let studiesList = [];
+        let jobsList = [];
+        let coursesList = [];
+  
+        try {
+          const studiesResponse = await API.get(`/applicants/studies/${params.idApplicant}`);
+          studiesList = studiesResponse.data;
+        } catch (error) {
+          if (error.response && error.response.status === 404) {
+            studiesList = []; // No hay estudios para este solicitante
+          } else {
+            throw error; // Otros errores deben ser manejados globalmente
+          }
+        }
+  
+        try {
+          const jobsResponse = await API.get(`/applicants/jobs/${params.idApplicant}`);
+          jobsList = jobsResponse.data;
+        } catch (error) {
+          if (error.response && error.response.status === 404) {
+            jobsList = []; // No hay trabajos para este solicitante
+          } else {
+            throw error; // Otros errores deben ser manejados globalmente
+          }
+        }
+  
+        try {
+          const coursesResponse = await API.get(`/applicants/courses/${params.idApplicant}`);
+          coursesList = coursesResponse.data;
+        } catch (error) {
+          if (error.response && error.response.status === 404) {
+            coursesList = []; // No hay cursos para este solicitante
+          } else {
+            throw error; // Otros errores deben ser manejados globalmente
+          }
+        }
+  
         setApplicant({
           ...applicantResponse.data,
-          studiesList: studiesResponse.data || [],
-          jobsList: jobsResponse.data || [],
-          coursesList: coursesResponse.data || [],
+          studiesList,
+          jobsList,
+          coursesList,
         });
-      
       } catch (error) {
-        setError(error.message);
+        if (error.response && error.response.status === 404) {
+          setError("El solicitante no se encuentra. Puede que haya sido eliminado.");
+        } else {
+          setError(error.message);
+        }
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchData();
   }, [params.idApplicant]);
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -137,7 +169,7 @@ const VerCv = () => {
     }
 
     try {
-      await API.put('app/editar', applicant);
+      await API.put(`/app/editar/ ${params.idApplicant}`, applicant);
      alert("Usuario actualizado con éxito");
       navigate("/homeUser");
     } catch (error) {
@@ -391,7 +423,9 @@ const VerCv = () => {
             <Typography variant="h5" component="h2" gutterBottom>
               Estudios
             </Typography>
-            {applicant.studiesList &&
+            {applicant.studiesList.length === 0 ? (
+            <Typography>No hay estudios registrados.</Typography>
+          ) : (
               applicant.studiesList.map((study, index) => (
                 <Grid container spacing={2} key={index}>
                   <Grid item xs={12} sm={6}>
@@ -461,7 +495,7 @@ const VerCv = () => {
                     </IconButton>
                   </Grid>
                 </Grid>
-              ))}
+               ) ))}
               </Grid>
         <IconButton onClick={() => handleAddItem("studiesList")} aria-label="Agregar">
           <IoAddCircleSharp />
@@ -473,7 +507,9 @@ const VerCv = () => {
             <Typography variant="h5" component="h2" gutterBottom>
               Trabajos
             </Typography>
-            {applicant.jobsList &&
+            {applicant.jobsList.length === 0 ? (
+            <Typography>No hay trabajos registrados.</Typography>
+          ) : (
               applicant.jobsList.map((job, index) => (
                 <Grid container spacing={2} key={index}>
                   <Grid item xs={12} sm={6}>
@@ -578,7 +614,7 @@ const VerCv = () => {
                     </IconButton>
                   </Grid>
                 </Grid>
-              ))}
+               )))}
               </Grid>
         <IconButton onClick={() => handleAddItem("jobsList")} aria-label="Agregar">
           <IoAddCircleSharp />
@@ -590,7 +626,9 @@ const VerCv = () => {
             <Typography variant="h5" component="h2" gutterBottom>
               Cursos
             </Typography>
-            {applicant.coursesList &&
+            {applicant.coursesList.length === 0 ? (
+            <Typography>No hay cursos registrados.</Typography>
+          ) : (
               applicant.coursesList.map((course, index) => (
                 <Grid container spacing={2} key={index}>
                   <Grid item xs={12} sm={6}>
@@ -637,7 +675,7 @@ const VerCv = () => {
                     </IconButton>
                   </Grid>
                 </Grid>
-              ))}
+              ) ))}
            
           </Grid>
           <IconButton onClick={() => handleAddItem("coursesList")} aria-label="Agregar">

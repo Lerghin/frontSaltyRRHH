@@ -1,12 +1,11 @@
-// Ajustes en VacancyUser.js
-import  { useState, useEffect } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
+import { Container, Table, Button } from 'react-bootstrap';
 import VacancyCard from '../../Componentes/VacancyCard';
 import { API } from '../../Utils/axios';
 import { useNavigate } from 'react-router-dom';
 import { LS } from '../../Utils/LS';
 import SideBarUsers from '../../Componentes/SideBarUsers';
-import './VacancyUser.css'; // Asegúrate de que el archivo CSS esté en el mismo directorio
+import './VacancyUser.css'; // Ensure the CSS file is in the same directory
 
 const VacancyUser = () => {
   const [vacancies, setVacancies] = useState([]);
@@ -35,18 +34,18 @@ const VacancyUser = () => {
     };
 
     fetchUserData();
-  }, [idApplicant]);
+  }, []);
 
   const searcher = (e) => {
     const searchTerm = e.target.value.toLowerCase();
     setSearch(searchTerm);
 
-    const filteredPatients = vacancies.filter(
-      (pat) =>
-        pat.nombreVacante.toLowerCase().includes(searchTerm) ||
-        pat.status.toLowerCase().includes(searchTerm)
+    const filteredVacancies = vacancies.filter(
+      (vac) =>
+        vac.nombreVacante.toLowerCase().includes(searchTerm) ||
+        vac.status.toLowerCase().includes(searchTerm)
     );
-    setResults(searchTerm.trim() === "" ? vacancies : filteredPatients);
+    setResults(searchTerm.trim() === "" ? vacancies : filteredVacancies);
   };
 
   useEffect(() => {
@@ -62,7 +61,7 @@ const VacancyUser = () => {
         setVacancies(sortedVacancies);
         setResults(sortedVacancies);
       } catch (error) {
-        console.error("Error fetching vacantes:", error);
+        console.error("Error fetching vacancies:", error);
         setError(error.message);
       } finally {
         setLoading(false);
@@ -76,9 +75,11 @@ const VacancyUser = () => {
     navigate('/homeUser');
   };
 
-  const handleApply = async (vacancyId, idApplicant) => {
+  const handleApply = async (vacancyId) => {
     try {
       const response = await API.post(`${idApplicant}/apply/${vacancyId}`);
+      const emailRRHH = await API.post(`/v1/${idApplicant}/sendMessageApplicants/${vacancyId}`);
+      const emailApp = await API.post(`/v1/sendMessageApplicants/${idApplicant}/${vacancyId}`);
       alert("Te has postulado Exitosamente");
       GoBack();
       console.log("Application successful:", response.data);
@@ -100,7 +101,7 @@ const VacancyUser = () => {
   }
 
   return (
-    <div className="vacancy-user-page">
+    <div className="home">
       <SideBarUsers className="home-sidebar" />
       <div className="vacancy-content">
         <Container>
@@ -121,13 +122,24 @@ const VacancyUser = () => {
           </div>
           <br />
           <h1 className='text-center'>Vacantes Disponibles</h1>
-          <Row xs={1} md={2} lg={3} className="g-4">
-            {results.map((vacancy) => (
-              <Col key={vacancy.id}>
-                <VacancyCard vacancy={vacancy} onApply={() => handleApply(vacancy.id, idApplicant)} />
-              </Col>
-            ))}
-          </Row>
+          <div className="table-responsive">
+            <Table striped bordered hover size="sm">
+              <thead>
+                <tr>
+                  <th>Nombre Vacante</th>
+                  <th>Estado</th>
+                  <th>Descripción del puesto</th>
+                  <th>Requisitos</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {results.map((vacancy) => (
+                  <VacancyCard key={vacancy.id} vacancy={vacancy} onApply={handleApply} />
+                ))}
+              </tbody>
+            </Table>
+          </div>
         </Container>
       </div>
     </div>

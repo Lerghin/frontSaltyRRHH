@@ -9,7 +9,7 @@ import {
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { LS } from "../Utils/LS";
-import './ResponsiveSideBar.css'; // Asegúrate de importar los estilos
+import './responsiveSide.css'; // Asegúrate de importar los estilos
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../Store/Actions/authActions";
 

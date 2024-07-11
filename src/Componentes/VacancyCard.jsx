@@ -1,25 +1,19 @@
-
-import { Card, Button } from 'react-bootstrap';
+import React from 'react';
+import { Button } from 'react-bootstrap';
 
 const VacancyCard = ({ vacancy, onApply }) => {
   return (
-    <Card className="m-3" style={{ maxWidth: '300px' }}>
-      <Card.Body>
-        <Card.Title>{vacancy.nombreVacante}</Card.Title>
-        <Card.Text>
-          <strong>Estado:</strong> {vacancy.status}
-        </Card.Text>
-        <Card.Text>
-          <strong>Descripción del puesto:</strong> {vacancy.descripcion}
-        </Card.Text>
-        <Card.Text>
-          <strong>Requisitos:</strong> {vacancy.requisitos}
-        </Card.Text>
-        <Button onClick={() => onApply(vacancy.id)} variant="primary">
+    <tr>
+      <td>{vacancy.nombreVacante}</td>
+      <td>{vacancy.status}</td>
+      <td>{vacancy.descripcion}</td>
+      <td>{vacancy.requisitos}</td>
+      <td>
+        <Button variant="primary" onClick={() => onApply(vacancy.id)}>
           Postularse
         </Button>
-      </Card.Body>
-    </Card>
+      </td>
+    </tr>
   );
 };
 

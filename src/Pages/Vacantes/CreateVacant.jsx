@@ -33,7 +33,9 @@ const CreateVacancy = () => {
     try {
       console.log('Datos a enviar:', vacancyData);
       const { data } = await API.post('/vacant/create', vacancyData);
+      const { vacante } = await API.post('/v1/sendMessageApplicants/', vacancyData);
       console.log(data);
+      console.log(vacante);
       toast.success(data.message);
       alert('Vacante creada con éxito');
       navigate('/vacantes');

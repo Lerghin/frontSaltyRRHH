@@ -1,37 +1,56 @@
 /* VacancyUser.css */
 .vacancy-user-page {
-    display: flex;
-    min-height: 100vh; /* Asegura que ocupe toda la altura de la ventana */
-  }
-  
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  min-height: 100vh; /* Ensure it occupies the entire height of the window */
+}
+
+.home-sidebar {
+  flex: 0 0 250px; /* Fixed width for the sidebar */
+  background-color: #f8f9fa; /* Background color */
+  height: 100vh; /* Occupy the entire height of the window */
+  position: sticky; /* Sticks in place when scrolling */
+  top: 0; /* Stick to the top edge */
+}
+
+.vacancy-content {
+  flex: 1; /* Main content occupies the remaining space */
+  padding: 20px; /* Add some space around the content */
+  overflow-y: auto; /* Allow vertical scrolling if needed */
+  margin-left: 20px; /* Increase the left margin */
+}
+
+.table-responsive {
+  margin-top: 20px;
+}
+
+.table th, .table td {
+  text-align: center; /* Center-align text */
+}
+
+.table thead th {
+  background-color: #343a40;
+  color: #fff;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.vacancy-user-page{
+  display:flex;
+  justify-content:evenly;
+}
+@media (max-width: 768px) {
   .home-sidebar {
-    flex: 0 0 250px; /* Ancho fijo para la barra lateral */
-    background-color: #f8f9fa; /* Color de fondo */
-    height: 100vh; /* Ocupa toda la altura de la ventana */
-    position: sticky; /* Permanece en su lugar al hacer scroll */
-    top: 0; /* Se pega al borde superior */
+    display: none; /* Hide the sidebar on small screens */
   }
-  
+
   .vacancy-content {
-    flex: 1; /* El contenido principal ocupa el resto del espacio */
-    padding: 20px; /* Añade un poco de espacio alrededor del contenido */
-    overflow-y: auto; /* Permite desplazamiento vertical si es necesario */
+    margin-left: 0; /* Remove the margin on small screens */
   }
-  
-  .vacancy-content {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    margin-left: 20px; /* Aumenta el margen a la izquierda */
+
+  .table-responsive {
+    overflow-x: auto; /* Allow horizontal scrolling */
   }
-  
-  @media (max-width: 768px) {
-    .home-sidebar {
-      display: none; /* Oculta la barra lateral en pantallas pequeñas */
-    }
-    
-    .vacancy-content {
-      margin-left: 0; /* Quita el margen en pantallas pequeñas */
-    }
-  }
-  
+}

@@ -14,7 +14,7 @@ const MainLayout = () => {
       <header className="w-100 h-100  d-flex  justify-content-between align-items-center   ">
         <div className=" d-flex align-items-center    overflow-hidden ">
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTxUixxU9wdmrR8gAqDq9VLc8SOs1xPV-I-Q&s"
+            src="https://ibb.co/rd4cZP4"
             alt="Logo"
             className="logo"
           />

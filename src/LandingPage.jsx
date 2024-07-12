@@ -41,9 +41,7 @@ const LandingPage = () => {
             <Title variant="h3">Bienvenido a Salty</Title>
             <Subtitle variant="h5">Tu plataforma de snacks favorita</Subtitle>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <img src="/images/salty_logo.png" alt="Salty Logo" style={{ maxWidth: '100%', height: 'auto' }} />
-          </Grid>
+         
           <Grid item xs={12} sm={6}>
             <Typography variant="body1">
               Descubre nuestra increíble selección de snacks saludables y deliciosos.

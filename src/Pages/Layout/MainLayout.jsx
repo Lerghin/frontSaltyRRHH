@@ -13,11 +13,7 @@ const MainLayout = () => {
     <div className="w-100 h-[10vh]  bg-teal-700 relative">
       <header className="w-100 h-100  d-flex  justify-content-between align-items-center   ">
         <div className=" d-flex align-items-center    overflow-hidden ">
-          <img
-            src="https://ibb.co/rd4cZP4"
-            alt="Logo"
-            className="logo"
-          />
+      
           <h1 className=" logo-h1 hidden sm:block text-1xl  m-1 uppercase translate-y-0.3 translate-x-8 font-bold w-80 ">
            Saltysnack Tuyero C.A.
           </h1>

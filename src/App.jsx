@@ -23,6 +23,7 @@ import CreateAdmin from "./Pages/CreateAdmin";
 import VerCV from "./Pages/RegistarUser/VerCv";
 import VacancyUser from "./Pages/Vacantes/VacancyUser";
 import MyApp from "./Pages/RegistarUser/MyApp";
+import LandingPage from "./LandingPage";
 
 
 const ProtectedRoute = () => {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
+        element:<LandingPage />
+      },
+      {
+        path: '/signUpUser',
         element:<SignupForm />
       },
       {

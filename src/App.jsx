@@ -39,7 +39,7 @@ const router = createBrowserRouter([
     children: [
       
       {
-        path: '/signUpUser',
+        path: '/',
         element:<SignupForm />
       },
       {

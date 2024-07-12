@@ -1,8 +1,39 @@
 {
-    "rewrites":[{
+  "rewrites": [
+    {
       "source": "/(.*)",
       "destination": "/"
-  
-    }]
-  }
-  
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "same-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "geolocation=(self)"
+        },
+        {
+          "key": "google-site-verification",
+          "value": "vBBVIA3pu3RXWvpza68xKtDjlg80wS2hdUuzPqYSqTQ"
+        }
+      ]
+    }
+  ]
+}
